@@ -1,0 +1,993 @@
+# PROJECT: STRUCTURALAB
+## Professional Civil Engineering Structural Analysis & Reinforced Concrete Design Web Application
+
+Bertindaklah sebagai Senior Full-Stack Developer, Structural Engineer, Computational Engineer, UI/UX Designer, dan Software Architect.
+
+Saya ingin membangun sebuah aplikasi web profesional bernama **StructuraLab**, yaitu aplikasi teknik sipil yang berfungsi sebagai alat bantu pembelajaran sekaligus alat perhitungan struktur secara matematis dan teknis.
+
+Aplikasi ini ditujukan untuk mahasiswa teknik sipil, dosen, dan pengguna yang mempelajari analisis struktur serta perancangan beton bertulang.
+
+Aplikasi harus memiliki perhitungan yang benar secara matematis, proses penyelesaian yang transparan, visualisasi struktur, serta hasil yang dapat dipertanggungjawabkan berdasarkan metode dan standar yang dipilih.
+
+**PENTING: Jangan hanya membuat desain tampilan (UI). Buat aplikasi yang benar-benar berfungsi, termasuk sistem autentikasi, database, numerical calculation engine, visualisasi, dan seluruh interaksi pengguna. Jangan menggunakan angka hasil perhitungan palsu atau hasil simulasi yang tidak berasal dari mesin perhitungan.**
+
+---
+
+# 1. IDENTITAS DAN KONSEP APLIKASI
+
+Nama aplikasi: StructuraLab
+
+Tagline:
+"Analyze. Design. Understand."
+
+Konsep utama:
+StructuraLab merupakan platform perhitungan teknik sipil yang menggabungkan tiga hal:
+
+1. Structural Analysis.
+2. Reinforced Concrete Design.
+3. Engineering Learning.
+
+Tujuan aplikasi:
+- Membantu mahasiswa menghitung berbagai permasalahan analisis struktur.
+- Membantu perhitungan dan desain elemen beton bertulang.
+- Menampilkan proses penyelesaian secara berurutan.
+- Memvisualisasikan struktur, beban, reaksi tumpuan, serta diagram gaya dalam.
+- Memberikan rekomendasi desain yang memenuhi persyaratan.
+- Menjadi media pembelajaran yang dapat digunakan untuk memeriksa hasil perhitungan manual.
+
+Gunakan bahasa Indonesia sebagai bahasa utama aplikasi, dengan istilah teknik dalam bahasa Inggris sebagai pendamping apabila diperlukan.
+
+Sistem satuan utama menggunakan SI:
+- Panjang: mm atau m.
+- Gaya: N atau kN.
+- Momen: N.mm atau kN.m.
+- Tegangan: MPa.
+- Beban terdistribusi: kN/m.
+
+Sediakan konversi satuan otomatis dan konsisten.
+
+---
+
+# 2. SISTEM LOGIN DAN ADMIN DASHBOARD
+
+Sebelum masuk ke aplikasi, pengguna harus melewati halaman autentikasi.
+
+Buat halaman login profesional dengan:
+- Logo StructuraLab.
+- Email.
+- Password.
+- Tombol Login.
+- Tombol Register / Create Account.
+- Forgot Password.
+- Validasi input.
+- Pesan kesalahan yang jelas.
+
+Gunakan Firebase Authentication untuk autentikasi pengguna dan Cloud Firestore untuk penyimpanan data.
+
+Terdapat dua jenis akun:
+
+### A. Administrator
+Administrator memiliki akses khusus untuk:
+- Melihat seluruh pengguna yang telah mendaftar.
+- Melihat nama dan email pengguna.
+- Melihat waktu pendaftaran.
+- Melihat waktu login terakhir.
+- Melihat jumlah pengguna aktif.
+- Melihat statistik penggunaan aplikasi.
+- Melihat modul yang paling sering digunakan.
+- Melihat jumlah perhitungan yang dilakukan.
+- Mengelola akun pengguna.
+- Mengelola konfigurasi standar perhitungan.
+
+Buat dashboard administrator yang hanya bisa diakses akun dengan hak admin yang telah diverifikasi di sisi server.
+
+### B. User
+Pengguna biasa dapat:
+- Menggunakan kedua modul kalkulator.
+- Menyimpan hasil perhitungan.
+- Membuka riwayat perhitungan.
+- Menghapus riwayat miliknya.
+- Mengunduh hasil perhitungan.
+
+Semua password harus ditangani Firebase Authentication dan tidak disimpan sebagai teks biasa.
+
+Terapkan Firestore Security Rules agar pengguna tidak dapat mengakses data pribadi pengguna lain.
+
+Sediakan pemberitahuan privasi tentang data akun dan aktivitas penggunaan yang dicatat.
+
+---
+
+# 3. DASHBOARD UTAMA STRUCTURALAB
+
+Setelah berhasil login, pengguna akan diarahkan ke halaman dashboard.
+
+Tampilkan:
+
+Header:
+- Logo StructuraLab.
+- Dashboard.
+- Calculation History.
+- Documentation.
+- Profile.
+- Logout.
+
+Bagian utama:
+
+Welcome to StructuraLab
+
+"Your Engineering Calculation Workspace"
+
+Di bawahnya sediakan dua kartu utama yang dapat diklik.
+
+### KARTU 1: STRUCTURAL ANALYSIS
+
+Deskripsi:
+Analyze beams, frames, trusses, and 2D structural systems.
+
+Ikon: Structural Frame.
+
+Tombol:
+OPEN STRUCTURAL ANALYSIS.
+
+### KARTU 2: REINFORCED CONCRETE DESIGN
+
+Deskripsi:
+Analyze and design reinforced concrete structural elements.
+
+Ikon: Reinforced Concrete Beam.
+
+Tombol:
+OPEN CONCRETE CALCULATOR.
+
+Kedua kartu memiliki tampilan profesional, animasi hover yang halus, dan desain modern.
+
+Sediakan tombol kembali ke dashboard pada seluruh halaman kalkulator agar pengguna dapat berpindah modul kapan saja.
+
+---
+
+# 4. MODUL PERTAMA: STRUCTURAL ANALYSIS
+
+Modul ini merupakan kalkulator analisis struktur yang memiliki kemampuan memodelkan dan menganalisis:
+
+1. Beam (balok).
+2. Portal Frame (portal).
+3. Truss (rangka batang).
+4. General 2D Structures (struktur dua dimensi).
+
+Tampilan modul harus menyerupai software analisis struktur profesional seperti SAP2000, ETABS, dan AutoCAD.
+
+## 4.1 Tampilan workspace
+
+Gunakan layout profesional dengan tiga area utama:
+
+LEFT SIDEBAR:
+- Model.
+- Geometry.
+- Nodes.
+- Members.
+- Supports.
+- Loads.
+- Material Properties.
+- Section Properties.
+- Analysis Settings.
+
+CENTER WORKSPACE:
+- Area pemodelan struktur.
+- Grid koordinat.
+- Sumbu X dan Y.
+- Dimensi bentang.
+- Simbol tumpuan.
+- Simbol beban.
+- Nomor titik dan batang.
+- Zoom, pan, dan fit to screen.
+
+RIGHT SIDEBAR:
+- Properties.
+- Input data.
+- Selected member information.
+- Selected support information.
+- Load properties.
+
+BOTTOM PANEL:
+- Calculation results.
+- Reactions.
+- Axial force diagram.
+- Shear force diagram.
+- Bending moment diagram.
+- Displacement results.
+- Calculation steps.
+
+Sediakan mode input melalui formulir numerik maupun pemodelan melalui canvas.
+
+Pengguna harus dapat mengubah geometri dan parameter tanpa perlu membuat ulang model.
+
+## 4.2 INPUT GEOMETRI STRUKTUR
+
+Sediakan input:
+
+- Panjang setiap bentang.
+- Jumlah bentang.
+- Tinggi portal.
+- Koordinat titik.
+- Jumlah batang.
+- Posisi setiap batang.
+- Material struktur.
+- Modulus elastisitas E.
+- Momen inersia I.
+- Luas penampang A.
+
+Pengguna dapat menambah atau menghapus bentang dan batang.
+
+Semua objek memiliki identitas tersendiri.
+
+## 4.3 INPUT TUMPUAN
+
+Berikan pilihan jenis tumpuan:
+
+1. Sendi (Pinned Support).
+2. Rol (Roller Support).
+3. Jepit (Fixed Support).
+4. Ujung bebas (Free End).
+
+Setiap tumpuan memiliki simbol visual yang mudah dikenali.
+
+Ketentuan:
+- Sendi menahan translasi horizontal dan vertikal, tetapi mengizinkan rotasi.
+- Rol menahan translasi sesuai arah kendalanya.
+- Jepit menahan translasi dan rotasi.
+- Ujung bebas tidak memberikan reaksi tumpuan.
+
+Untuk struktur kantilever, sediakan model dengan satu ujung jepit dan ujung lainnya bebas.
+
+Sistem harus mampu membedakan jenis tumpuan, derajat kebebasan, stabilitas, dan tingkat ketaktentuan struktur.
+
+## 4.4 INPUT PEMBEBANAN
+
+Sediakan beberapa jenis beban.
+
+### A. Point Load (Beban Terpusat)
+
+Input:
+- Besar beban (kN).
+- Posisi beban (m).
+- Arah beban.
+- Komponen horizontal dan vertikal.
+
+Beban dapat diletakkan di sembarang titik pada batang selama masih berada di dalam rentang batang.
+
+### B. Uniformly Distributed Load (Beban Merata)
+
+Input:
+- Intensitas beban q (kN/m).
+- Titik awal pembebanan.
+- Titik akhir pembebanan.
+- Arah beban.
+
+Pengguna dapat mengatur panjang daerah yang menerima beban.
+
+### C. Triangular Distributed Load (Beban Segitiga)
+
+Fitur ini sangat penting.
+
+Pengguna dapat menentukan besar beban pada kedua ujung daerah pembebanan.
+
+Contoh:
+- Titik awal: 0 kN/m.
+- Titik akhir: 3 kN/m.
+- Panjang daerah pembebanan: 4 m.
+
+Sistem harus secara otomatis membentuk beban terdistribusi linier berbentuk segitiga.
+
+### D. Trapezoidal Distributed Load (Beban Trapesium)
+
+Input:
+- Beban awal q1.
+- Beban akhir q2.
+- Titik awal.
+- Titik akhir.
+
+Sistem menghitung distribusi beban linier berdasarkan kedua nilai tersebut.
+
+### E. Applied Moment (Momen Terpusat)
+
+Input:
+- Besar momen.
+- Posisi momen.
+- Arah putaran.
+
+Semua jenis beban harus mempunyai visualisasi yang sesuai dan dapat diubah maupun dihapus.
+
+Beri validasi agar beban tidak ditempatkan di luar batas struktur.
+
+## 4.5 SISTEM ANALISIS STRUKTUR
+
+Setelah pengguna memasukkan geometri, tumpuan, material, dan beban, sediakan tombol:
+
+RUN STRUCTURAL ANALYSIS.
+
+Sistem terlebih dahulu harus mengidentifikasi:
+- Kestabilan struktur.
+- Jumlah reaksi yang tidak diketahui.
+- Derajat ketaktentuan statis.
+- Derajat kebebasan.
+- Kesesuaian metode analisis.
+
+### A. STRUKTUR STATIS TERTENTU
+
+Untuk struktur statis tertentu, gunakan persamaan keseimbangan:
+
+- ΣFx = 0.
+- ΣFy = 0.
+- ΣM = 0.
+
+Tampilkan langkah penyelesaian secara berurutan:
+
+1. Identifikasi struktur dan jenis tumpuan.
+2. Gambarkan free body diagram (FBD).
+3. Tentukan seluruh beban yang bekerja.
+4. Ubah beban terdistribusi menjadi resultan ekuivalen apabila diperlukan, beserta lokasi resultannya.
+5. Hitung reaksi tumpuan.
+6. Periksa keseimbangan struktur.
+7. Hitung gaya normal (N).
+8. Hitung gaya geser (V).
+9. Hitung momen lentur (M).
+10. Tentukan nilai maksimum dan minimum.
+
+Untuk balok, tampilkan:
+- Support Reaction.
+- Shear Force Diagram (SFD).
+- Bending Moment Diagram (BMD).
+
+Untuk portal:
+- Axial Force Diagram (NFD).
+- Shear Force Diagram (SFD).
+- Bending Moment Diagram (BMD).
+
+Untuk truss:
+- Reaksi tumpuan.
+- Gaya batang.
+- Identifikasi batang tarik (Tension).
+- Identifikasi batang tekan (Compression).
+
+Metode sambungan dan metode potongan dapat digunakan pada rangka batang statis tertentu.
+
+### B. STRUKTUR STATIS TAK TENTU
+
+Apabila struktur merupakan struktur statis tak tentu, berikan pilihan metode analisis:
+
+1. Metode Cross (Moment Distribution Method).
+2. Metode Slope Deflection.
+
+Jangan otomatis menggunakan satu metode tanpa memberikan pilihan kepada pengguna.
+
+#### Metode Cross
+
+Tampilkan proses:
+- Identifikasi joint dan batang.
+- Menghitung kekakuan relatif batang.
+- Menghitung distribution factor (DF).
+- Menghitung carry-over factor (COF).
+- Menghitung fixed end moment (FEM).
+- Menyusun tabel distribusi momen.
+- Melakukan iterasi distribusi dan carry-over.
+- Menghitung momen akhir batang.
+- Menghitung reaksi tumpuan.
+- Menghitung gaya geser.
+- Membentuk diagram momen dan geser.
+
+Tabel Cross harus dapat dibaca dengan jelas, termasuk setiap iterasi dan nilai distribusi momen.
+
+#### Metode Slope Deflection
+
+Tampilkan proses:
+- Menentukan FEM setiap batang.
+- Menentukan rotasi joint.
+- Menentukan translasi atau sway apabila terjadi.
+- Menyusun persamaan slope deflection untuk masing-masing batang.
+- Menyusun persamaan keseimbangan momen pada joint.
+- Menyelesaikan persamaan simultan.
+- Menentukan momen ujung batang.
+- Menghitung reaksi tumpuan.
+- Menghitung gaya geser dan momen sepanjang batang.
+
+Untuk portal, sediakan analisis sway dan non-sway.
+
+PENTING:
+Jangan memberikan hasil seolah-olah dihitung dengan metode Cross jika sebenarnya menggunakan metode lain. Setiap metode harus mempunyai implementasi perhitungan yang sesuai.
+
+Untuk struktur yang tidak sesuai dengan metode yang dipilih, jelaskan alasannya dan berikan metode yang sesuai.
+
+## 4.6 VISUALISASI DIAGRAM
+
+Buat visualisasi profesional dan interaktif.
+
+Tampilkan:
+- Bentuk awal struktur.
+- Diagram pembebanan.
+- Deformed Shape.
+- Support Reactions.
+- Axial Force Diagram.
+- Shear Force Diagram.
+- Bending Moment Diagram.
+
+Diagram harus:
+- Memiliki garis dasar yang jelas.
+- Memiliki penanda nilai maksimum dan minimum.
+- Memiliki skala yang proporsional.
+- Memperlihatkan tanda positif dan negatif.
+- Memiliki satuan.
+- Memungkinkan zoom dan hover untuk melihat nilai pada titik tertentu.
+
+Pastikan arah diagram dan konvensi tanda sesuai dengan konvensi yang dijelaskan kepada pengguna.
+
+## 4.7 HASIL PERHITUNGAN
+
+Jangan hanya memberikan jawaban akhir.
+
+Setiap hasil harus dilengkapi:
+1. Data yang diketahui.
+2. Parameter struktur.
+3. Asumsi yang digunakan.
+4. Rumus.
+5. Substitusi angka.
+6. Proses perhitungan.
+7. Hasil setiap tahap.
+8. Pemeriksaan keseimbangan.
+9. Kesimpulan.
+
+Sediakan tombol:
+- View Calculation Steps.
+- View Diagrams.
+- Save Calculation.
+- Export PDF.
+- Export Image.
+- Edit Model.
+- Back to Dashboard.
+
+---
+
+# 5. MODUL KEDUA: REINFORCED CONCRETE DESIGN
+
+Modul kedua merupakan kalkulator analisis dan desain beton bertulang.
+
+Gunakan e-book yang saya sediakan:
+
+"Perancangan Struktur Beton Bertulang – Agus Setiawan, Berdasarkan SNI 2847:2013."
+
+Jadikan buku tersebut sebagai referensi utama untuk implementasi teori, rumus, prosedur analisis, dan contoh perhitungan.
+
+Fokus implementasi awal adalah balok beton bertulang, bukan seluruh elemen beton sekaligus.
+
+Sediakan pilihan utama:
+
+1. Analisis Penampang Beton.
+2. Desain Penampang Beton.
+3. Desain Tulangan Geser / Sengkang.
+
+## 5.1 PILIHAN JENIS PENAMPANG
+
+Pengguna dapat memilih:
+
+A. Rectangular Beam - Singly Reinforced.
+Balok persegi dengan tulangan tunggal.
+
+B. Rectangular Beam - Doubly Reinforced.
+Balok persegi dengan tulangan rangkap.
+
+C. T-Beam.
+Balok beton dengan penampang T.
+
+D. L-Beam.
+Balok beton dengan penampang L.
+
+Tampilkan gambar geometri setiap penampang sebelum pengguna menentukan pilihan.
+
+---
+
+# 6. ANALISIS BALOK BETON BERTULANG
+
+Pada menu analisis, pengguna memasukkan:
+
+- Lebar balok (b).
+- Tinggi total (h).
+- Tinggi efektif (d).
+- Selimut beton.
+- Diameter tulangan tarik.
+- Diameter tulangan tekan jika ada.
+- Mutu beton f'c.
+- Mutu baja fy.
+- Luas tulangan tarik As.
+- Luas tulangan tekan As' jika ada.
+- Momen terfaktor Mu.
+- Diameter sengkang jika diperlukan untuk menghitung d aktual.
+
+Untuk balok T dan L tambahkan:
+- Lebar sayap efektif (bf).
+- Tebal sayap (hf).
+- Lebar badan balok (bw).
+- Jarak dan geometri penampang.
+
+Sediakan visualisasi penampang yang berubah secara otomatis sesuai input pengguna.
+
+Tampilkan posisi tulangan tarik, tulangan tekan, sumbu netral, blok tegangan tekan, dan dimensi geometri.
+
+## 6.1 ANALISIS LENTUR TULANGAN TUNGGAL
+
+Ikuti prosedur dari Bab 3.
+
+Sistem harus menghitung:
+
+1. Luas tulangan As.
+2. Rasio tulangan ρ.
+3. Rasio tulangan seimbang ρb.
+4. Batas rasio tulangan yang berlaku.
+5. Kedalaman garis netral c.
+6. Tinggi blok tegangan ekuivalen a.
+7. Regangan beton dan baja.
+8. Tegangan baja.
+9. Faktor reduksi kekuatan φ.
+10. Momen nominal Mn.
+11. Momen rencana φMn.
+
+Lakukan pemeriksaan apakah:
+- Tulangan tarik telah mencapai kondisi leleh atau belum.
+- Penampang terkendali tarik, transisi, atau terkendali tekan.
+- Kapasitas momen penampang memenuhi momen yang dibutuhkan.
+
+Kesimpulan utama:
+
+φMn ≥ Mu
+
+Tampilkan status:
+- MEMENUHI SYARAT.
+- TIDAK MEMENUHI SYARAT.
+
+Tampilkan alasan teknis di balik kesimpulan tersebut.
+
+## 6.2 ANALISIS BALOK TULANGAN RANGKAP
+
+Hitung:
+- Rasio tulangan tarik.
+- Rasio tulangan tekan.
+- Kedalaman garis netral.
+- Regangan tulangan tekan.
+- Apakah tulangan tekan mengalami leleh atau tidak.
+- Gaya tekan beton.
+- Gaya tekan baja.
+- Gaya tarik baja.
+- Momen nominal total.
+- Momen rencana.
+
+Apabila tulangan tekan belum leleh, jangan memaksakan asumsi bahwa tegangan baja sama dengan fy. Gunakan kompatibilitas regangan untuk menentukan tegangan aktual.
+
+Tampilkan dua kondisi analisis sesuai perilaku tulangan tekan.
+
+## 6.3 ANALISIS BALOK T DAN L
+
+Implementasikan analisis berdasarkan prosedur dalam buku.
+
+Untuk penampang T:
+- Hitung lebar efektif sayap.
+- Identifikasi posisi blok tekan.
+- Periksa apakah blok tekan seluruhnya berada pada sayap atau melewati sayap.
+- Hitung kapasitas lentur berdasarkan kondisi yang sesuai.
+
+Untuk penampang L:
+- Gunakan lebar efektif sayap sesuai posisi balok tepi.
+- Analisis daerah tekan sesuai geometri penampang.
+
+Bedakan kondisi momen positif dan momen negatif.
+
+Tampilkan:
+- Distribusi tegangan.
+- Posisi garis netral.
+- Posisi blok tekan.
+- Gaya tekan dan tarik.
+- Kapasitas momen.
+
+---
+
+# 7. DESAIN BALOK BETON BERTULANG
+
+Pada menu desain, pengguna memasukkan:
+
+- Momen terfaktor Mu.
+- Mutu beton f'c.
+- Mutu baja fy.
+- Lebar balok b.
+- Tinggi balok h atau pilihan dimensi otomatis.
+- Selimut beton.
+- Jenis tulangan yang diinginkan.
+- Diameter tulangan yang tersedia.
+
+Sistem harus mampu melakukan desain dari kebutuhan momen menuju kebutuhan tulangan.
+
+### A. DESAIN TULANGAN TUNGGAL
+
+Lakukan:
+1. Menentukan batas rasio tulangan.
+2. Menentukan kebutuhan luas tulangan As.
+3. Memilih kombinasi jumlah dan diameter tulangan.
+4. Menghitung ulang kapasitas.
+5. Memeriksa kondisi regangan.
+6. Memeriksa jarak bersih antar tulangan.
+7. Memeriksa selimut beton.
+8. Memeriksa kapasitas momen.
+
+### B. DESAIN TULANGAN RANGKAP
+
+Apabila tulangan tunggal tidak memenuhi ketentuan desain atau tidak memungkinkan secara geometris, berikan alternatif desain tulangan rangkap.
+
+Hitung:
+- As tarik.
+- As tekan.
+- Posisi tulangan.
+- Kedalaman efektif.
+- Kapasitas momen total.
+- Kondisi leleh tulangan tekan.
+- Pemeriksaan persyaratan penampang.
+
+### C. DESAIN BALOK T
+
+Lakukan perhitungan lebar efektif sayap dan kapasitas penampang.
+
+Rekomendasikan kebutuhan tulangan berdasarkan momen terfaktor.
+
+### D. REKOMENDASI DESAIN
+
+Ini merupakan fitur penting.
+
+Sediakan beberapa alternatif desain yang telah diperiksa.
+
+Contoh format:
+
+Alternatif 1:
+Dimensi 300 × 500 mm.
+Tulangan tarik 4D19.
+Tulangan tekan sesuai kebutuhan.
+Status: Memenuhi syarat.
+
+Alternatif 2:
+Dimensi 300 × 550 mm.
+Tulangan tarik 4D16.
+Status: Memenuhi syarat.
+
+Angka di atas hanya contoh tampilan, bukan hasil perhitungan tetap.
+
+Sistem harus benar-benar menghasilkan alternatif berdasarkan input pengguna.
+
+Urutkan rekomendasi berdasarkan penggunaan material dan efisiensi desain, dengan tetap memastikan semua persyaratan terpenuhi.
+
+Jangan memberikan rekomendasi jika hasil perhitungannya belum diverifikasi.
+
+---
+
+# 8. DESAIN TULANGAN GESER / SENGKANG
+
+Buat menu khusus untuk desain sengkang balok beton bertulang berdasarkan Bab 5 e-book.
+
+Input:
+- Lebar badan balok bw.
+- Tinggi efektif d.
+- Tinggi balok h.
+- Mutu beton f'c.
+- Mutu baja sengkang fyv.
+- Gaya geser terfaktor Vu.
+- Diameter sengkang.
+- Jumlah kaki sengkang.
+- Posisi penampang kritis.
+- Dimensi dan jenis tumpuan.
+
+Lakukan perhitungan:
+
+1. Menentukan lokasi penampang kritis.
+2. Menghitung kuat geser beton Vc.
+3. Menghitung kontribusi kuat geser tulangan Vs.
+4. Menentukan faktor reduksi φ.
+5. Memeriksa kapasitas geser.
+6. Menentukan kebutuhan luas tulangan sengkang Av.
+7. Menentukan jarak sengkang s.
+8. Memeriksa tulangan geser minimum.
+9. Memeriksa batas jarak maksimum sengkang.
+10. Menentukan apakah dimensi balok perlu diperbesar.
+
+Untuk sengkang vertikal, lakukan perhitungan berdasarkan rumus yang sesuai dengan standar yang dipilih.
+
+Tampilkan beberapa alternatif:
+- D10 - 100 mm.
+- D10 - 125 mm.
+- D10 - 150 mm.
+- D13 - 150 mm.
+
+Angka tersebut merupakan pilihan contoh diameter dan spasi, bukan rekomendasi otomatis.
+
+Sistem harus menguji setiap kombinasi dan menentukan pilihan yang memenuhi semua persyaratan.
+
+Tampilkan diagram penempatan sengkang sepanjang balok.
+
+Bedakan daerah dekat tumpuan dan daerah lapangan apabila persyaratan desain menghasilkan jarak sengkang yang berbeda.
+
+Berikan status desain yang jelas.
+
+---
+
+# 9. SISTEM VERIFIKASI DAN STANDAR
+
+Buat pilihan standar perhitungan:
+
+1. Referensi buku Agus Setiawan berdasarkan SNI 2847:2013.
+2. Standar SNI terbaru yang telah diintegrasikan dan diverifikasi dari dokumen resmi.
+
+Standar harus mempunyai pengaturan versi yang terpisah.
+
+Jangan mencampur rumus dari edisi standar berbeda dalam satu proses perhitungan.
+
+Setiap perubahan standar harus memiliki informasi:
+- Nama standar.
+- Tahun terbit.
+- Pasal yang digunakan.
+- Perubahan rumus atau persyaratan.
+- Sumber referensi.
+
+Jika dokumen standar terbaru belum tersedia atau belum diverifikasi, jangan mengaktifkan opsi tersebut sebagai standar yang diklaim berlaku.
+
+Untuk tahap awal, prioritaskan implementasi lengkap sesuai buku dan SNI 2847:2013.
+
+---
+
+# 10. SISTEM PENJELASAN PERHITUNGAN
+
+Fitur utama StructuraLab adalah memberikan langkah perhitungan yang transparan.
+
+Setiap proses perhitungan harus dapat dibuka melalui tombol:
+
+VIEW DETAILED CALCULATION.
+
+Tampilkan format:
+
+A. Data yang diketahui.
+
+B. Parameter yang digunakan.
+
+C. Dasar teori dan rumus.
+
+D. Definisi simbol dan variabel.
+
+E. Substitusi angka.
+
+F. Perhitungan bertahap.
+
+G. Hasil.
+
+H. Pemeriksaan persyaratan.
+
+I. Kesimpulan.
+
+J. Referensi metode atau standar.
+
+Berikan penjelasan logika teknik di setiap tahap, bukan sekadar menampilkan deretan angka.
+
+Contohnya:
+"Reaksi tumpuan vertikal dihitung terlebih dahulu karena harus memenuhi persamaan keseimbangan gaya vertikal. Setelah reaksi diketahui, diagram gaya geser dapat ditentukan."
+
+Gunakan notasi matematis yang rapi.
+
+Jangan menyembunyikan asumsi penting, pembulatan, konvensi tanda, atau satuan.
+
+---
+
+# 11. SISTEM ENGINE DAN AKURASI PERHITUNGAN
+
+Ini adalah bagian yang paling penting.
+
+Buat calculation engine yang terpisah dari komponen tampilan.
+
+Gunakan:
+- TypeScript untuk calculation engine.
+- Fungsi matematika yang terstruktur.
+- Sistem satuan yang konsisten.
+- Validasi input.
+- Numerical solver untuk persamaan simultan.
+- Unit testing.
+- Error handling.
+
+Jangan menggunakan AI generatif sebagai mesin utama untuk menghasilkan nilai numerik struktur.
+
+AI boleh dipakai untuk menjelaskan hasil, tetapi seluruh nilai numerik harus dihitung oleh fungsi matematika yang deterministik.
+
+Setiap hasil harus dapat direproduksi dari input yang sama.
+
+Terapkan pengujian dengan:
+- Contoh perhitungan manual.
+- Kasus sederhana yang hasilnya dapat diverifikasi.
+- Pengujian perubahan beban.
+- Pengujian perubahan tumpuan.
+- Pengujian stabilitas struktur.
+- Pengujian batas kapasitas penampang.
+
+Jika perhitungan tidak dapat diselesaikan, tampilkan pesan kesalahan dan penyebabnya. Jangan mengarang hasil.
+
+Jangan menyebut suatu struktur aman hanya berdasarkan satu pemeriksaan apabila pemeriksaan lain yang diperlukan belum dilakukan.
+
+---
+
+# 12. DESAIN UI/UX
+
+Saya menginginkan desain yang profesional seperti software rekayasa struktur.
+
+Referensi visual:
+- SAP2000.
+- ETABS.
+- AutoCAD.
+- Autodesk Structural Tools.
+
+Namun buat identitas visual sendiri untuk StructuraLab.
+
+Gunakan:
+- Dark navy atau charcoal sebagai warna utama.
+- Blue sebagai warna aksen.
+- Background workspace gelap atau netral.
+- Panel properties yang terstruktur.
+- Garis dan simbol struktur yang jelas.
+- Tipografi modern.
+- Animasi ringan.
+- Ikon teknik sipil yang relevan.
+
+Jangan membuat tampilan seperti website template biasa.
+
+Utamakan workspace yang luas agar diagram struktur mudah dibaca.
+
+Buat tampilan responsif untuk desktop, tablet, dan perangkat mobile.
+
+Pada desktop, prioritaskan ruang kerja lebar.
+
+---
+
+# 13. RIWAYAT DAN EKSPOR PERHITUNGAN
+
+Setiap pengguna dapat menyimpan hasil perhitungan.
+
+Sediakan halaman Calculation History dengan:
+- Nama proyek.
+- Jenis kalkulator.
+- Tanggal perhitungan.
+- Metode analisis.
+- Standar yang digunakan.
+- Status perhitungan.
+
+Sediakan ekspor PDF dengan format laporan teknik yang profesional.
+
+Isi PDF:
+1. Cover laporan.
+2. Identitas proyek.
+3. Data input.
+4. Model struktur atau gambar penampang.
+5. Metode dan standar.
+6. Langkah perhitungan.
+7. Hasil akhir.
+8. Diagram.
+9. Pemeriksaan keamanan.
+10. Kesimpulan.
+
+Pastikan diagram tetap terbaca saat diekspor.
+
+---
+
+# 14. ARSITEKTUR PENGEMBANGAN
+
+Gunakan arsitektur aplikasi yang mudah dikembangkan.
+
+Rekomendasi teknologi:
+- Frontend: React + TypeScript.
+- Styling: Tailwind CSS.
+- Visualisasi struktur: SVG atau Canvas.
+- Backend: Firebase.
+- Authentication: Firebase Authentication.
+- Database: Cloud Firestore.
+- Calculation Engine: Modular TypeScript.
+- Chart: Library visualisasi yang mendukung grafik interaktif.
+- PDF: Library pembuat PDF.
+
+Pisahkan:
+- Komponen UI.
+- Authentication.
+- Database.
+- Structural Analysis Engine.
+- Concrete Design Engine.
+- Diagram Renderer.
+- Report Generator.
+
+Jangan menempatkan seluruh logika perhitungan dalam satu file.
+
+Buat kode yang bersih, modular, terdokumentasi, dan mudah dikembangkan.
+
+Jangan mengekspos credential Firebase atau konfigurasi rahasia di dalam kode publik.
+
+---
+
+# 15. STRATEGI IMPLEMENTASI
+
+Karena StructuraLab mempunyai banyak fitur dan perhitungan yang kompleks, kerjakan secara bertahap tanpa mengorbankan kualitas perhitungan.
+
+Urutan pengembangan:
+
+PHASE 1:
+- Membuat UI dan branding StructuraLab.
+- Login dan register.
+- Firebase Authentication.
+- Admin dashboard.
+- User dashboard.
+- Navigasi kedua kalkulator.
+
+PHASE 2:
+- Structural Analysis untuk balok.
+- Input geometri.
+- Input tumpuan.
+- Input beban terpusat.
+- Input beban merata.
+- Input beban segitiga dan trapesium.
+- Analisis struktur statis tertentu.
+- Perhitungan reaksi.
+- SFD dan BMD.
+
+PHASE 3:
+- Portal frame.
+- Truss.
+- Struktur statis tak tentu.
+- Metode Cross.
+- Metode Slope Deflection.
+- Diagram gaya normal dan diagram lainnya.
+
+PHASE 4:
+- Analisis beton bertulang.
+- Balok tunggal.
+- Balok rangkap.
+- Balok T dan L.
+- Pemeriksaan kapasitas.
+- Pemeriksaan regangan.
+
+PHASE 5:
+- Desain beton bertulang.
+- Rekomendasi dimensi dan tulangan.
+- Desain sengkang.
+- Optimasi alternatif desain.
+
+PHASE 6:
+- Riwayat perhitungan.
+- PDF report.
+- Pengujian menyeluruh.
+- Optimasi performa.
+- Persiapan deployment.
+
+Setiap fase harus mempunyai fitur yang benar-benar berfungsi sebelum melanjutkan ke tahap berikutnya.
+
+---
+
+# 16. INSTRUKSI AKHIR UNTUK AI STUDIO
+
+Mulailah membangun StructuraLab dengan memperhatikan seluruh spesifikasi di atas.
+
+Prioritas utama adalah:
+
+1. Ketepatan perhitungan teknik.
+2. Kelengkapan langkah penyelesaian.
+3. Visualisasi struktur yang benar.
+4. Kemudahan penggunaan.
+5. Keamanan akun pengguna.
+6. Desain yang profesional.
+
+Jangan hanya membuat prototype visual.
+
+Jangan membuat tombol yang tidak mempunyai fungsi.
+
+Jangan menampilkan hasil perhitungan statis yang tidak berasal dari input pengguna.
+
+Jangan menggunakan placeholder untuk fitur inti seolah-olah fitur tersebut sudah selesai.
+
+Apabila terdapat fitur yang belum dapat diimplementasikan dalam satu tahap, jelaskan bagian yang belum selesai dan lanjutkan pembangunan secara modular.
+
+Sebelum menyatakan suatu fitur selesai, lakukan pengujian terhadap beberapa kasus perhitungan.
+
+Saya menginginkan hasil akhir berupa web application StructuraLab yang dapat digunakan secara nyata oleh mahasiswa teknik sipil dan dapat dikembangkan menjadi platform perhitungan struktur yang lebih lengkap.
+
+**Mulai dengan membangun fondasi aplikasi yang berfungsi, kemudian implementasikan calculation engine secara bertahap.**
